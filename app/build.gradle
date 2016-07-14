@@ -1,0 +1,124 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin: 'com.android.model.application'
+
+def assimpPath = '../../assimp'
+def OpenCVDir = '../../OpenCV-3.0.0-android-sdk/sdk'
+
+model {
+
+    repositories {
+        libs(PrebuiltLibraries) {
+            // Configure one pre-built lib: shared
+            my_assimp {
+                // Inform Android Studio where header file dir for this lib
+                headers.srcDir "${assimpPath}/include"
+                // Inform Android Studio where lib is -- each ABI should have a lib file
+                binaries.withType(SharedLibraryBinary) {
+                    sharedLibraryFile = file("src/main/externals/assimp/lib/${targetPlatform.getName()}/libassimp.so")
+                }
+            }
+
+            my_cv {
+                // Inform Android Studio where header file dir for this lib
+                headers.srcDir "${OpenCVDir}/native/jni/include"
+                // Inform Android Studio where lib is -- each ABI should have a lib file
+                binaries.withType(SharedLibraryBinary) {
+                    sharedLibraryFile = file("${OpenCVDir}/native/" +
+                            "libs/${targetPlatform.getName()}/libopencv_java3.so")
+                }
+            }
+
+        }
+    }
+
+    android {
+
+        // 23 = Android Marshmallow
+        compileSdkVersion = 23
+        buildToolsVersion = '23.0.2'
+
+        defaultConfig {
+            applicationId "com.anandmuralidhar.assimpandroid"
+            // assuming that device had Android KitKat (19) or above
+            minSdkVersion.apiLevel = 19
+            targetSdkVersion.apiLevel = 22
+
+            // versionCode and versionName are relevant if you release the app on Google Play
+            versionCode 1
+            versionName "1.0"
+        }
+
+        ndk {
+            platformVersion = 19
+            moduleName = 'ModelAssimpNative' // this creates libModelAssimpNative.so and should be loaded in Java
+            stl       = 'gnustl_static'
+            abiFilters.add("armeabi-v7a")
+
+            // specify the path to jni code
+            cppFlags.addAll(['-I' + file('src/main/jni/nativeCode/modelAssimp'),
+                            '-I' + file('src/main/jni/nativeCode/common'),
+                             '-I' + file('src/main/externals/glm-0.9.7.5')])
+
+            cppFlags.addAll(['-std=c++11', '-Wall', '-fno-exceptions', '-fno-rtti'])
+            ldLibs.addAll(['android', 'log', 'EGL', 'GLESv2', "stdc++"])
+        }
+
+        sources {
+            main {
+                jni {
+                    dependencies {
+                        // we use some functions from ndk_helper to simplify native tasks
+                        project ':ndk_helper' linkage 'static'
+                        project ':native_app_glue' linkage 'static'
+                        library 'my_assimp' linkage 'shared'
+                        library 'my_cv' linkage 'shared'
+                    }
+                    source {
+                        srcDirs 'src/main/jni'
+                    }
+                }
+                jniLibs {
+                    // for shared lib, lib need to be pushed to the target too
+                    // Once libs are copied into app/src/main/jniLibs directory,
+                    // Android Studio will pack them into APK's lib/ directory
+                    // Here we like to avoid another duplication by pointing
+                    // to the files that containing our libs' distribution location
+                    // so the same file is used by compiler at host, also packed
+                    // into APk to be used at Target (phone/tablet)
+                    source {
+                        srcDir "src/main/externals/assimp/lib"
+                        srcDir ("${OpenCVDir}/native/libs")
+                    }
+                }
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled = false
+                proguardFiles.add(file('proguard-rules.txt'))
+            }
+        }
+
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.4.0'
+}
+
+// add a task that runs the script copyFilesToAssets.sh
+task copyFilesToAssets(type: Exec) {
+    workingDir "$projectDir/src/main/"
+    commandLine 'sh', './copyFilesToAssets.sh'
+}
+
+// ensure that task copyFilesToAssets executes before build so that
+// updated shaders are copied to apk
+tasks.all {
+    task ->
+        if (task.name.startsWith('preBuild') ) {
+            task.dependsOn copyFilesToAssets
+        }
+}
