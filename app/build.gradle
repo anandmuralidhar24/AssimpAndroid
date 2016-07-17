@@ -56,7 +56,7 @@ model {
             platformVersion = 19
             moduleName = 'ModelAssimpNative' // this creates libModelAssimpNative.so and should be loaded in Java
             stl        = 'gnustl_static'
-            abiFilters.add("armeabi-v7a")
+            abiFilters.addAll(['armeabi-v7a', 'x86'])
 
             // specify the path to jni code
             cppFlags.addAll(['-I' + file('src/main/jni/nativeCode/modelAssimp'),
