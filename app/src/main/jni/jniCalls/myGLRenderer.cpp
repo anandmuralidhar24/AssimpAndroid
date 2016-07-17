@@ -22,16 +22,16 @@
 extern "C" {
 #endif
 
-extern ModelAssimp *gCubeObject;
+extern ModelAssimp *gAssimpObject;
 
 JNIEXPORT void JNICALL
 Java_com_anandmuralidhar_assimpandroid_MyGLRenderer_DrawFrameNative(JNIEnv *env,
                                                                       jobject instance) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
-    gCubeObject->Render();
+    gAssimpObject->Render();
 
 }
 
@@ -39,10 +39,10 @@ JNIEXPORT void JNICALL
 Java_com_anandmuralidhar_assimpandroid_MyGLRenderer_SurfaceCreatedNative(JNIEnv *env,
                                                                            jobject instance) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
-    gCubeObject->PerformGLInits();
+    gAssimpObject->PerformGLInits();
 
 }
 
@@ -52,10 +52,10 @@ Java_com_anandmuralidhar_assimpandroid_MyGLRenderer_SurfaceChangedNative(JNIEnv 
                                                                            jint width,
                                                                            jint height) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
-    gCubeObject->SetViewport(width, height);
+    gAssimpObject->SetViewport(width, height);
 
 }
 

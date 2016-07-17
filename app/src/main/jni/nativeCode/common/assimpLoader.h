@@ -40,7 +40,7 @@ public:
     AssimpLoader();
     ~AssimpLoader();
 
-    void RenderObject(glm::mat4 * MVP);
+    void Render3DModel(glm::mat4 *MVP);
     bool Load3DModel(std::string modelFilename);
     void Delete3DModel();
 

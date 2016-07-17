@@ -61,11 +61,12 @@ void ModelAssimp::PerformGLInits() {
 
     modelObject = new AssimpLoader();
 
-    std::string objFilename, mtlFilename, texFilename;
-    bool isFilesPresent  =
-            gHelperObject->ExtractAssetReturnFilename("amenemhat.obj", objFilename) &&
-            gHelperObject->ExtractAssetReturnFilename("amenemhat.mtl", mtlFilename) &&
-            gHelperObject->ExtractAssetReturnFilename("amenemhat.jpg", texFilename);
+    // extract the OBJ and companion files from assets
+std::string objFilename, mtlFilename, texFilename;
+bool isFilesPresent  =
+        gHelperObject->ExtractAssetReturnFilename("amenemhat.obj", objFilename) &&
+        gHelperObject->ExtractAssetReturnFilename("amenemhat.mtl", mtlFilename) &&
+        gHelperObject->ExtractAssetReturnFilename("amenemhat.jpg", texFilename);
     if( !isFilesPresent ) {
         MyLOGE("Model %s does not exist!", objFilename.c_str());
         return;
@@ -87,7 +88,7 @@ void ModelAssimp::Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 mvpMat = myGLCamera->GetMVP();
-    modelObject->RenderObject(&mvpMat);
+    modelObject->Render3DModel(&mvpMat);
 
     CheckGLError("ModelAssimp::Render");
 

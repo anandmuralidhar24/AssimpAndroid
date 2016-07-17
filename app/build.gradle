@@ -2,29 +2,32 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 apply plugin: 'com.android.model.application'
 
-def assimpPath = '../../assimp'
-def OpenCVDir = '../../OpenCV-3.0.0-android-sdk/sdk'
+// path to OpenCV Android SDK Version 3.0
+def opencvSDKPath = '../../OpenCV-3.0.0-android-sdk'
 
 model {
 
     repositories {
         libs(PrebuiltLibraries) {
-            // Configure one pre-built lib: shared
+
+            // Assimp prebuilt shared lib
             my_assimp {
                 // Inform Android Studio where header file dir for this lib
-                headers.srcDir "${assimpPath}/include"
+                headers.srcDir "src/main/externals/assimp-3.0/include"
                 // Inform Android Studio where lib is -- each ABI should have a lib file
                 binaries.withType(SharedLibraryBinary) {
-                    sharedLibraryFile = file("src/main/externals/assimp/lib/${targetPlatform.getName()}/libassimp.so")
+                    sharedLibraryFile = file("src/main/externals/assimp-3.0/lib/" +
+                            "${targetPlatform.getName()}/libassimp.so")
                 }
             }
 
+            // OpenCV prebuilt shared lib
             my_cv {
                 // Inform Android Studio where header file dir for this lib
-                headers.srcDir "${OpenCVDir}/native/jni/include"
+                headers.srcDir "${opencvSDKPath}/sdk/native/jni/include"
                 // Inform Android Studio where lib is -- each ABI should have a lib file
                 binaries.withType(SharedLibraryBinary) {
-                    sharedLibraryFile = file("${OpenCVDir}/native/" +
+                    sharedLibraryFile = file("${opencvSDKPath}/sdk/native/" +
                             "libs/${targetPlatform.getName()}/libopencv_java3.so")
                 }
             }
@@ -40,7 +43,7 @@ model {
 
         defaultConfig {
             applicationId "com.anandmuralidhar.assimpandroid"
-            // assuming that device had Android KitKat (19) or above
+            // assuming that device has Android KitKat (19) or above
             minSdkVersion.apiLevel = 19
             targetSdkVersion.apiLevel = 22
 
@@ -52,12 +55,12 @@ model {
         ndk {
             platformVersion = 19
             moduleName = 'ModelAssimpNative' // this creates libModelAssimpNative.so and should be loaded in Java
-            stl       = 'gnustl_static'
+            stl        = 'gnustl_static'
             abiFilters.add("armeabi-v7a")
 
             // specify the path to jni code
             cppFlags.addAll(['-I' + file('src/main/jni/nativeCode/modelAssimp'),
-                            '-I' + file('src/main/jni/nativeCode/common'),
+                             '-I' + file('src/main/jni/nativeCode/common'),
                              '-I' + file('src/main/externals/glm-0.9.7.5')])
 
             cppFlags.addAll(['-std=c++11', '-Wall', '-fno-exceptions', '-fno-rtti'])
@@ -87,8 +90,8 @@ model {
                     // so the same file is used by compiler at host, also packed
                     // into APk to be used at Target (phone/tablet)
                     source {
-                        srcDir "src/main/externals/assimp/lib"
-                        srcDir ("${OpenCVDir}/native/libs")
+                        srcDir "src/main/externals/assimp-3.0/lib"
+                        srcDir ("${opencvSDKPath}/sdk/native/libs")
                     }
                 }
             }

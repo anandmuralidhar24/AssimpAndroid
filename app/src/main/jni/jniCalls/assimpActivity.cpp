@@ -23,7 +23,7 @@ extern "C" {
 #endif
 
 // global pointer is used in JNI calls to reference to same object of type Cube
-ModelAssimp *gCubeObject =NULL;
+ModelAssimp *gAssimpObject =NULL;
 
 // global pointer to instance of MyJNIHelper that is used to read from assets
 MyJNIHelper * gHelperObject=NULL;
@@ -38,16 +38,16 @@ Java_com_anandmuralidhar_assimpandroid_AssimpActivity_CreateObjectNative(JNIEnv 
                                                                          jstring pathToInternalDir) {
 
     gHelperObject = new MyJNIHelper(env, instance, assetManager, pathToInternalDir);
-    gCubeObject = new ModelAssimp();
+    gAssimpObject = new ModelAssimp();
 }
 
 JNIEXPORT void JNICALL
 Java_com_anandmuralidhar_assimpandroid_AssimpActivity_DeleteObjectNative(JNIEnv *env,
                                                                          jobject instance) {
-    if (gCubeObject != NULL) {
-        delete gCubeObject;
+    if (gAssimpObject != NULL) {
+        delete gAssimpObject;
     }
-    gCubeObject = NULL;
+    gAssimpObject = NULL;
 
     if (gHelperObject != NULL) {
         delete gHelperObject;

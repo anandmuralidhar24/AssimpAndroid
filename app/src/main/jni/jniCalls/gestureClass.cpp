@@ -22,15 +22,15 @@
 extern "C" {
 #endif
 
-extern ModelAssimp *gCubeObject;
+extern ModelAssimp *gAssimpObject;
 
 JNIEXPORT void JNICALL
 Java_com_anandmuralidhar_assimpandroid_GestureClass_DoubleTapNative(JNIEnv *env, jobject instance) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
-    gCubeObject->DoubleTapAction();
+    gAssimpObject->DoubleTapAction();
 
 }
 
@@ -43,18 +43,18 @@ Java_com_anandmuralidhar_assimpandroid_GestureClass_ScrollNative(JNIEnv *env, jo
                                                                jfloat distanceX, jfloat distanceY,
                                                                jfloat positionX, jfloat positionY) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
     // normalize movements on the screen wrt GL surface dimensions
     // invert dY to be consistent with GLES conventions
-    float dX = (float) distanceX / gCubeObject->GetScreenWidth();
-    float dY = -(float) distanceY / gCubeObject->GetScreenHeight();
-    float posX = 2*positionX/ gCubeObject->GetScreenWidth() - 1.;
-    float posY = -2*positionY / gCubeObject->GetScreenHeight() + 1.;
+    float dX = (float) distanceX / gAssimpObject->GetScreenWidth();
+    float dY = -(float) distanceY / gAssimpObject->GetScreenHeight();
+    float posX = 2*positionX/ gAssimpObject->GetScreenWidth() - 1.;
+    float posY = -2*positionY / gAssimpObject->GetScreenHeight() + 1.;
     posX = fmax(-1., fmin(1., posX));
     posY = fmax(-1., fmin(1., posY));
-    gCubeObject->ScrollAction(dX, dY, posX, posY);
+    gAssimpObject->ScrollAction(dX, dY, posX, posY);
 
 }
 
@@ -65,10 +65,10 @@ JNIEXPORT void JNICALL
 Java_com_anandmuralidhar_assimpandroid_GestureClass_ScaleNative(JNIEnv *env, jobject instance,
                                                               jfloat scaleFactor) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
-    gCubeObject->ScaleAction((float) scaleFactor);
+    gAssimpObject->ScaleAction((float) scaleFactor);
 
 }
 
@@ -80,15 +80,15 @@ JNIEXPORT void JNICALL
 Java_com_anandmuralidhar_assimpandroid_GestureClass_MoveNative(JNIEnv *env, jobject instance,
                                                                jfloat distanceX, jfloat distanceY) {
 
-    if (gCubeObject == NULL) {
+    if (gAssimpObject == NULL) {
         return;
     }
 
     // normalize movements on the screen wrt GL surface dimensions
     // invert dY to be consistent with GLES conventions
-    float dX = distanceX / gCubeObject->GetScreenWidth();
-    float dY = -distanceY / gCubeObject->GetScreenHeight();
-    gCubeObject->MoveAction(dX, dY);
+    float dX = distanceX / gAssimpObject->GetScreenWidth();
+    float dY = -distanceY / gAssimpObject->GetScreenHeight();
+    gAssimpObject->MoveAction(dX, dY);
 
 }
 

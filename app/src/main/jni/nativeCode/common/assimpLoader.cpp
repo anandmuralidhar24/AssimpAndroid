@@ -67,7 +67,7 @@ void AssimpLoader::GenerateGLBuffers() {
         const aiMesh *mesh = scene->mMeshes[n]; // read the n-th mesh
 
         // create array with faces
-        // convert from Assimp's format to array for GL
+        // convert from Assimp's format to array for GLES
         unsigned int *faceArray = new unsigned int[mesh->mNumFaces * 3];
         unsigned int faceIndex = 0;
         for (unsigned int t = 0; t < mesh->mNumFaces; ++t) {
@@ -198,9 +198,13 @@ bool AssimpLoader::LoadTexturesToGL(std::string modelFilename) {
             // opencv reads image from top-left, while GL expects it from bottom-left
             // vertically flip the image
             cv::flip(textureImage, textureImage, 0);
+
+            // bind the texture
             glBindTexture(GL_TEXTURE_2D, textureGLNames[i]);
+            // specify linear filtering
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            // load the OpenCV Mat into GLES
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureImage.cols,
                          textureImage.rows, 0, GL_RGB, GL_UNSIGNED_BYTE,
                          textureImage.data);
@@ -271,7 +275,7 @@ void AssimpLoader::Delete3DModel() {
 /**
  * Renders the 3D model by rendering every mesh in the object
  */
-void AssimpLoader::RenderObject(glm::mat4 * mvpMat) {
+void AssimpLoader::Render3DModel(glm::mat4 *mvpMat) {
 
     if (!isObjectLoaded) {
         return;
