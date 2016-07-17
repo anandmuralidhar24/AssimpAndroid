@@ -1,6 +1,11 @@
 AssimpAndroid
 ===============
 
+In this project we load and render a 3D model using the [Open Asset Import Library](http://www.assimp.org) (aka Assimp).
+We will load a OBJ model, probably the simplest format for 3D models.
+
+A blog describing this project:
+http://www.anandmuralidhar.com/blog/android/assimp
 
 License
 -------
