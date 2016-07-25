@@ -113,8 +113,13 @@ dependencies {
 
 // add a task that runs the script copyFilesToAssets.sh
 task copyFilesToAssets(type: Exec) {
-    workingDir "$projectDir/src/main/"
-    commandLine 'sh', './copyFilesToAssets.sh'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        //TODO
+    }
+    else {
+        workingDir "$projectDir/src/main/"
+        commandLine 'sh', './copyFilesToAssets.sh'
+    }
 }
 
 // ensure that task copyFilesToAssets executes before build so that
