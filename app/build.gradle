@@ -16,7 +16,7 @@ model {
                 headers.srcDir "src/main/externals/assimp-3.0/include"
                 // Inform Android Studio where lib is -- each ABI should have a lib file
                 binaries.withType(SharedLibraryBinary) {
-                    sharedLibraryFile = file("src/main/externals/assimp-3.0/lib/" +
+                    sharedLibraryFile = file("src/main/externals/assimp-3.0/libs/" +
                             "${targetPlatform.getName()}/libassimp.so")
                 }
             }
@@ -24,11 +24,11 @@ model {
             // OpenCV prebuilt shared lib
             my_cv {
                 // Inform Android Studio where header file dir for this lib
-                headers.srcDir "${opencvSDKPath}/sdk/native/jni/include"
+                headers.srcDir "src/main/externals/opencv-3.0.0/include"
                 // Inform Android Studio where lib is -- each ABI should have a lib file
                 binaries.withType(SharedLibraryBinary) {
-                    sharedLibraryFile = file("${opencvSDKPath}/sdk/native/" +
-                            "libs/${targetPlatform.getName()}/libopencv_java3.so")
+                    sharedLibraryFile = file("src/main/externals/opencv-3.0.0/libs/" +
+                            "${targetPlatform.getName()}/libopencv_java3.so")
                 }
             }
 
@@ -56,7 +56,7 @@ model {
             platformVersion = 19
             moduleName = 'ModelAssimpNative' // this creates libModelAssimpNative.so and should be loaded in Java
             stl        = 'gnustl_static'
-            abiFilters.addAll(['armeabi-v7a', 'x86'])
+            abiFilters.add('armeabi-v7a')
 
             // specify the path to jni code
             cppFlags.addAll(['-I' + file('src/main/jni/nativeCode/modelAssimp'),
@@ -90,8 +90,8 @@ model {
                     // so the same file is used by compiler at host, also packed
                     // into APk to be used at Target (phone/tablet)
                     source {
-                        srcDir "src/main/externals/assimp-3.0/lib"
-                        srcDir ("${opencvSDKPath}/sdk/native/libs")
+                        srcDir "src/main/externals/assimp-3.0/libs"
+                        srcDir "src/main/externals/opencv-3.0.0/libs"
                     }
                 }
             }

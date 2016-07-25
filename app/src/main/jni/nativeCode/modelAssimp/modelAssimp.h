@@ -34,7 +34,6 @@ public:
     void    PerformGLInits();
     void    Render();
     void    SetViewport(int width, int height);
-    bool    IsInitsDone(){return initsDone;}
     void    DoubleTapAction();
     void    ScrollAction(float distanceX, float distanceY, float positionX, float positionY);
     void    ScaleAction(float scaleFactor);
@@ -43,8 +42,6 @@ public:
     int     GetScreenHeight() const { return screenHeight; }
 
 private:
-    void    RenderCube();
-
     bool    initsDone;
     int     screenWidth, screenHeight;
 

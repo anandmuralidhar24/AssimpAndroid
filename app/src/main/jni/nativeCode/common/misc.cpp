@@ -24,14 +24,14 @@ std::string GetFileName(std::string fileName) {
     // assume filename is of the form "<path>/<name>.<type>"
     std::string::size_type slashIndex = fileName.find_last_of("/");
 
-    std::string only_name;
+    std::string onlyName;
     if (slashIndex == std::string::npos) {
-        only_name = fileName.substr(0, std::string::npos);
+        onlyName = fileName.substr(0, std::string::npos);
     } else {
-        only_name = fileName.substr(slashIndex + 1, std::string::npos);
+        onlyName = fileName.substr(slashIndex + 1, std::string::npos);
     }
 
-    return only_name;
+    return onlyName;
 }
 
 /**

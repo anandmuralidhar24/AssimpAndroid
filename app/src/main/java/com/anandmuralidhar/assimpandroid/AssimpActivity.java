@@ -82,7 +82,7 @@ public class AssimpActivity extends Activity{
 
 
     /**
-     * load libCubeNative.so since it has all the native functions
+     * load libModelAssimpNative.so since it has all the native functions
      */
     static {
         System.loadLibrary("ModelAssimpNative");

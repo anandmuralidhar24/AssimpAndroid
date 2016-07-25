@@ -7,6 +7,8 @@ We will load a OBJ model, probably the simplest format for 3D models.
 A blog describing this project:
 http://www.anandmuralidhar.com/blog/android/assimp
 
+The project requires devices with ABI armeabi-v7a.
+
 License
 -------
 

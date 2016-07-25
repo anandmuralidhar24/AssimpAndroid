@@ -19,7 +19,7 @@
 
 #include <android/log.h>
 
-#define LOG_TAG "CubeAndroid"
+#define LOG_TAG "AssimpAndroid"
 #define  MyLOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
 #define  MyLOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 #define  MyLOGV(...)  __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG,__VA_ARGS__)
