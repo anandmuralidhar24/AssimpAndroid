@@ -14,6 +14,8 @@
  *    limitations under the License.
  */
 
+// shader associated with AssimpLoader
+
 varying vec2      textureCoords;
 uniform sampler2D textureSampler;
 

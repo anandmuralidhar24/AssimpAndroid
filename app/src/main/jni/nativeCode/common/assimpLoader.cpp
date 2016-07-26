@@ -29,8 +29,8 @@ AssimpLoader::AssimpLoader() {
     isObjectLoaded = false;
 
     // shader related setup -- loading, attribute and uniform locations
-    std::string vertexShader    = "modelTextured.vsh";
-    std::string fragmentShader  = "modelTextured.fsh";
+    std::string vertexShader    = "shaders/modelTextured.vsh";
+    std::string fragmentShader  = "shaders/modelTextured.fsh";
     shaderProgramID         = LoadShaders(vertexShader, fragmentShader);
     vertexAttribute         = GetAttributeLocation(shaderProgramID, "vertexPosition");
     vertexUVAttribute       = GetAttributeLocation(shaderProgramID, "vertexUV");
